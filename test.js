@@ -1,23 +1,29 @@
-var codes = [];//global var to be used in function below; global var's should be declared outside functions in javascript
+var codes = {};//global object to be used in function below; global var's should be declared outside functions in javascript
 
 function master()  {
     var txt = document.getElementById("tgt").innerHTML;
     var q = sort_freq(freq_meter(txt));
+    //console.log(q);
     var tree = build_trim_tree(q);
-    // console.log(tree);
+    //console.log(tree);
     assignCodes(tree);//codes get populated with codes for each character
+    //console.log(codes);
     var encoded = encode(txt);
-    // console.log(encoded);
+    //console.log(encoded);
     var decoded = decode(tree,encoded);
-    console.log(decoded);
+    //console.log(decoded);
+    var enc = document.getElementById("encoded");
+    enc.innerHTML = "The encoded bit stream is " + encoded;
+    var res = document.getElementById("result");
+    res.innerHTML = "The decoded text is " + decoded;
 }
 
-function assignCodes(tree_array, patt = ''){
+function assignCodes(tree_array, patt = '') {
     if (typeof(tree_array) === 'string'){
         codes[tree_array] = patt;
     }else{
-        assignCodes(tree_array[0],patt += '0');
-        assignCodes(tree_array[1],patt += '1');
+        assignCodes(tree_array[0],patt + '0');
+        assignCodes(tree_array[1],patt + '1');
     }
 }
 
@@ -34,19 +40,17 @@ function encode(str){
 function decode(tree_cpy, stream) {
     var decoded_msg = '';
     var p = tree_cpy;
-    console.log(tree_cpy);
-    // console.log(stream);
-    // console.log(codes);
-    for (bit in stream) {
+    for (bit of stream) {
+        if (typeof(p) === 'string') {
+            decoded_msg += p;
+            p = tree_cpy;
+        }
         if (bit === '0') {
             p = p[0];
         }else {
             p = p[1];
         }
-        if (typeof(p) === 'string') {
-            decoded_msg += p;
-            p = tree_cpy;
-        }
+
     };
     return decoded_msg;
 }
