@@ -40,17 +40,21 @@ function encode(str){
 function decode(tree_cpy, stream) {
     var decoded_msg = '';
     var p = tree_cpy;
-    for (bit of stream) {
-        if (typeof(p) === 'string') {
-            decoded_msg += p;
-            p = tree_cpy;
-        }
+
+    for (bit of stream) {// traversing the stream
         if (bit === '0') {
+            // console.log(p[0]);
             p = p[0];
+            //console.log(p);
         }else {
             p = p[1];
+            //console.log(p);
         }
-
+        if (typeof(p) === 'string') {
+            decoded_msg += p;
+            //console.log(p)
+            p = tree_cpy;//the tree must be retained to detect next bit combination present stream
+        }
     };
     return decoded_msg;
 }
