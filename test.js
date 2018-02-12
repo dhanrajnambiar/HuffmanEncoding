@@ -1,7 +1,8 @@
 var codes = {};//global object to be used in function below; global var's should be declared outside functions in javascript
+var conts = '';//string variable to display codes for each character
 
 function master()  {
-    var txt = document.getElementById("tgt").innerHTML;
+    var txt = document.getElementById("msg").value;
     var q = sort_freq(freq_meter(txt));
     //console.log(q);
     var tree = build_trim_tree(q);
@@ -12,6 +13,10 @@ function master()  {
     //console.log(encoded);
     var decoded = decode(tree,encoded);
     //console.log(decoded);
+    for (i of Object.keys(codes)){
+      conts += i + " :" + codes[i] + '<br>';
+    }
+    document.getElementById("cdtree").innerHTML = conts;
     var enc = document.getElementById("encoded");
     enc.innerHTML = "The encoded bit stream is " + encoded;
     var res = document.getElementById("result");
